@@ -182,12 +182,12 @@ def step_insights(articles: list, clusters: list, config: dict, prompts: dict, d
     return result
 
 
-def step_render(issue, articles, clusters, insights, config) -> str:
+def step_render(issue, articles, clusters, insights, config, editorial="") -> str:
     """Step 9: 渲染周刊 Markdown。"""
     from src.outputs.markdown import MarkdownRenderer
 
     renderer = MarkdownRenderer(config)
-    result = renderer.render(issue, articles, clusters, insights)
+    result = renderer.render(issue, articles, clusters, insights, weekly_editorial=editorial)
     logger.info(f"Step 9 [Render]: Newsletter generated")
     return result
 
@@ -334,12 +334,20 @@ def run_pipeline(mode: str = "weekly") -> None:
         # 洞察
         insights = step_insights(tagged, clusters, config, prompts, db)
 
+        # 主编按语 (L3 — 需要读完所有摘要后生成，所以在 insights 之后)
+        from src.processors.summarizer import Summarizer
+        summarizer = Summarizer(config, prompts)
+        category_dist = db.get_category_distribution()
+        weekly_editorial = summarizer.generate_weekly_editorial(tagged, clusters, category_dist)
+        logger.info(f"Editorial generated: {len(weekly_editorial)} chars")
+
         processed_articles = tagged
     else:
         # 从 DB 读取最近的未处理文章
         processed_articles = db.get_articles_without_summary(limit=50)
         clusters = []
         insights = {}
+        weekly_editorial = ""
         logger.info(f"Loaded {len(processed_articles)} unprocessed articles from DB")
 
     # --- Output ---
@@ -366,8 +374,8 @@ def run_pipeline(mode: str = "weekly") -> None:
             article_id = article.compute_id()
             db.update_article(article_id, issue_number=issue_number, included_in_issue=True)
 
-        # 渲染
-        markdown_content = step_render(issue, processed_articles, clusters, insights, config)
+        # 渲染（传入主编按语）
+        markdown_content = step_render(issue, processed_articles, clusters, insights, config, weekly_editorial)
 
         # 保存
         output_dir = Path(config["storage"]["output_path"]) / f"issue-{issue_number}"
@@ -380,16 +388,8 @@ def run_pipeline(mode: str = "weekly") -> None:
         db.create_issue(issue)
         logger.info(f"Newsletter saved to {md_path}")
 
-        # 提取 editorial 文本（从 markdown 中安全提取）
-        editorial_text = ""
-        if markdown_content and '📝 主编按语' in markdown_content:
-            try:
-                editorial_text = markdown_content.split('📝 主编按语')[1].split('---')[0].strip()
-            except Exception:
-                pass
-
-        # 发布（传入文章和洞察数据）
-        step_output(markdown_content, issue, config, articles=processed_articles, insights=insights, editorial=editorial_text)
+        # 发布
+        step_output(markdown_content, issue, config, articles=processed_articles, insights=insights, editorial=weekly_editorial)
 
         # 信源发现（可选）
         if mode == "weekly":
