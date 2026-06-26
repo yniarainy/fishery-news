@@ -145,27 +145,27 @@ class Summarizer:
         weekly_prompts = self.prompts.get("weekly", {})
         system_prompt = weekly_prompts.get("system", "")
 
-        # 构造输入
-        top_articles = articles[:10]  # 取前 10 篇
+        # 取更多文章让编辑有足够素材
+        top_n = min(len(articles), 20)
 
         articles_text = ""
-        for i, a in enumerate(top_articles):
+        for i, a in enumerate(articles[:top_n]):
             cat = getattr(a, '_cached_category', None) or getattr(a, 'category', 'other')
             articles_text += f"{i + 1}. [{cat}] {a.title}\n"
             summary = getattr(a, '_cached_summary', None) or getattr(a, 'summary_cn', '') or getattr(a, 'raw_summary', '') or ''
-            articles_text += f"   {summary[:120]}\n\n"
+            articles_text += f"   摘要：{summary[:150]}\n\n"
 
         cat_text = ", ".join(f"{k}: {v}篇" for k, v in sorted(category_dist.items()))
 
         user_prompt = (
-            f"本周共收录 {len(articles)} 篇新闻，"
-            f"覆盖 {len(clusters)} 个话题，"
-            f"分类分布：{cat_text}\n\n"
-            f"本周文章：\n{articles_text[:3000]}"
+            f"本周共收录 {len(articles)} 篇新闻，分类分布：{cat_text}\n\n"
+            f"以下是本周文章列表，请仔细阅读后撰写主编按语：\n\n{articles_text[:4000]}"
         )
 
         try:
-            return self.llm_client.chat(system_prompt, user_prompt)
+            return self.llm_client.chat(
+                system_prompt, user_prompt, max_tokens=2000, temperature=0.5
+            )
         except Exception as e:
             logger.error(f"[Summarize L3] Weekly editorial failed: {e}")
             return "本周渔业新闻摘要（主编按语生成中...）"
