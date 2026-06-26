@@ -52,9 +52,18 @@ jobs:
                       tenacity scikit-learn
 
       - name: Generate Newsletter
-        run: python src/main.py --mode weekly
+        run: python src/main.py --mode weekly --debug
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+      - name: Show what was collected
+        run: |
+          echo "=== Raw articles ==="
+          ls -la data/raw/ 2>/dev/null || echo "No raw data"
+          echo "=== Site output ==="
+          ls -laR site/ 2>/dev/null || echo "No site output"
+          echo "=== Newsletter preview ==="
+          head -20 site/index.html 2>/dev/null || echo "No index.html"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
