@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+.venv/
+venv/
+
+# Runtime data (not committed)
+data/raw/
+data/chroma/
+data/output/
+
+# Environment
+.env
+.env.local
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+config/settings.local.yaml
+data/*.db

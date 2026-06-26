@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渔业新闻周刊 2026-W26 — Fishery News Weekly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --text: #1a202c;
+  --text2: #64748b;
+  --text3: #94a3b8;
+  --border: #e2e8f0;
+  --primary: #0ea5e9;
+  --primary-dark: #0369a1;
+  --primary-light: #e0f2fe;
+  --accent: #06b6d4;
+  --policy: #3b82f6;
+  --policy-bg: #eff6ff;
+  --science: #8b5cf6;
+  --science-bg: #f5f3ff;
+  --industry: #f59e0b;
+  --industry-bg: #fffbeb;
+  --ngo: #10b981;
+  --ngo-bg: #ecfdf5;
+  --data: #ef4444;
+  --data-bg: #fef2f2;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,.08), 0 8px 40px rgba(0,0,0,.04);
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:900px;margin:0 auto;padding:0 20px}
+
+/* ── Navigation ── */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;max-width:900px;margin:0 auto}
+.nav-brand{font-weight:800;font-size:1.1rem;color:var(--primary-dark);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-brand .icon{font-size:1.4rem}
+.nav-links{display:flex;gap:16px;align-items:center}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 12px;border-radius:8px;transition:var(--transition)}
+.nav-links a:hover,.nav-links a.active{color:var(--primary);background:var(--primary-light)}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 30%,#0284c7 60%,#0ea5e9 100%);
+  padding:48px 20px 40px;text-align:center;color:#fff;position:relative;overflow:hidden;
+  margin-bottom:32px;border-radius:0 0 40px 40px;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 70%,rgba(255,255,255,.08) 0%,transparent 50%),
+             radial-gradient(circle at 70% 30%,rgba(255,255,255,.05) 0%,transparent 50%);
+  animation:heroShimmer 20s linear infinite;
+}
+@keyframes heroShimmer{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.hero *{position:relative;z-index:1}
+.hero-badge{
+  display:inline-block;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);
+  padding:4px 14px;border-radius:99px;font-size:.75rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;
+}
+.hero h1{font-size:2.2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:6px}
+.hero .date{font-size:.95rem;opacity:.85;font-weight:400}
+.hero .count{
+  display:inline-block;margin-top:10px;background:rgba(255,255,255,.2);
+  padding:5px 16px;border-radius:99px;font-size:.82rem;font-weight:600;
+}
+
+/* ── Filter Bar ── */
+.filter-bar{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;
+  padding:0 20px;
+}
+.filter-btn{
+  padding:7px 18px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);
+  font-size:.82rem;font-weight:600;color:var(--text2);cursor:pointer;
+  transition:var(--transition);font-family:inherit;white-space:nowrap;line-height:1.4;
+}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary)}
+.filter-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.filter-btn .count{font-size:.7rem;opacity:.7;margin-left:3px}
+
+/* ── Stats Row ── */
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.stat{
+  flex:1;min-width:90px;background:var(--surface);border-radius:var(--radius-sm);
+  padding:16px;text-align:center;box-shadow:var(--shadow);transition:var(--transition);
+}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat-num{font-size:2rem;font-weight:800;color:var(--primary-dark);line-height:1.1}
+.stat-label{font-size:.75rem;color:var(--text3);margin-top:2px;font-weight:500}
+
+/* ── Editorial ── */
+.editorial{
+  background:linear-gradient(135deg,#f0f9ff,#ecfeff);border-radius:var(--radius);
+  padding:28px 32px;margin-bottom:28px;box-shadow:var(--shadow);
+  border:1px solid #bae6fd;
+}
+.editorial h2{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin-bottom:10px}
+.editorial p{font-size:.95rem;color:#334155;line-height:1.8}
+.editorial-body p{margin-bottom:10px}
+.editorial-body p:last-child{margin-bottom:0}
+.editorial-body strong{color:#0c4a6e;font-weight:700}
+
+/* ── Section ── */
+.section{margin-bottom:28px}
+.section-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  padding-bottom:10px;border-bottom:2px solid var(--border);
+}
+.section-header .icon{font-size:1.4rem}
+.section-header h2{font-size:1.25rem;font-weight:700}
+
+/* ── Article Card (magazine layout with image) ── */
+.articles{display:flex;flex-direction:column;gap:14px}
+.article-card{
+  background:var(--surface);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);transition:var(--transition);
+  display:flex;align-items:stretch;min-height:120px;
+}
+.article-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.article-card .card-img{
+  width:180px;min-width:180px;flex-shrink:0;
+  background-size:cover;background-position:center;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.article-card .card-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.15) 100%);
+}
+.article-card .card-img .icon-overlay{
+  font-size:2.8rem;opacity:.35;position:relative;z-index:1;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));
+  transition:transform .3s;
+}
+.article-card:hover .card-img .icon-overlay{
+  transform:scale(1.15);
+}
+.article-card .card-body{
+  flex:1;padding:16px 20px;display:flex;flex-direction:column;justify-content:center;
+  min-width:0;
+}
+.article-card .card-body .meta{
+  display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;
+}
+.article-card .card-body .source{
+  font-size:.7rem;color:var(--text3);font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.article-card .card-body .cat-badge{
+  font-size:.64rem;padding:2px 8px;border-radius:99px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.03em;
+}
+.cat-policy{background:var(--policy-bg);color:var(--policy)}
+.cat-science{background:var(--science-bg);color:var(--science)}
+.cat-industry{background:var(--industry-bg);color:var(--industry)}
+.cat-ngo{background:var(--ngo-bg);color:var(--ngo)}
+.cat-data{background:var(--data-bg);color:var(--data)}
+.article-card .card-body h3{font-size:1rem;font-weight:600;margin-bottom:4px;line-height:1.4}
+.article-card .card-body h3 a{color:var(--text);text-decoration:none;transition:var(--transition);word-break:break-word}
+.article-card .card-body h3 a:hover{color:var(--primary-dark)}
+.article-card .card-body .summary{font-size:.84rem;color:var(--text2);line-height:1.55;margin-bottom:6px}
+.article-card .card-body .tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{
+  font-size:.66rem;padding:2px 7px;border-radius:99px;
+  background:#f1f5f9;color:#64748b;font-weight:500;
+}
+@media(max-width:640px){
+  .article-card{flex-direction:column}
+  .article-card .card-img{width:100%;min-width:100%;height:140px}
+  .article-card .card-body{padding:14px 16px}
+}
+
+/* ── Insights ── */
+.insights{
+  background:var(--surface);border-radius:var(--radius);padding:24px 28px;
+  box-shadow:var(--shadow);margin-bottom:28px;
+}
+.insights h2{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin-bottom:14px}
+.insight-block{margin-bottom:16px}
+.insight-block h3{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.insight-block ul{list-style:none;padding:0}
+.insight-block li{padding:6px 0;font-size:.88rem;color:var(--text2);border-bottom:1px solid var(--border)}
+.insight-block li:last-child{border-bottom:none}
+.insight-block blockquote{
+  border-left:3px solid var(--primary);padding:8px 14px;margin:8px 0;
+  background:var(--primary-light);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-style:italic;color:#334155;
+}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;padding:32px 20px;color:var(--text3);font-size:.82rem;
+  border-top:1px solid var(--border);margin-top:32px;
+}
+.footer a{color:var(--primary);text-decoration:none}
+.footer .divider{margin:0 8px;color:var(--border)}
+
+/* ── Mobile ── */
+@media(max-width:640px){
+  .hero h1{font-size:1.5rem}
+  .hero{padding:36px 16px 32px;border-radius:0 0 28px 28px}
+  .editorial{padding:18px 20px}
+  .article-card{padding:14px 16px}
+  .stats{gap:6px}
+  .stat{padding:12px 8px}
+  .stat-num{font-size:1.5rem}
+  .nav{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a href="./" class="nav-brand"><span class="icon">🐟</span>Fishery News Weekly</a>
+  <div class="nav-links">
+    <a href="./" class="active">最新周刊</a>
+    <a href="archive.html">往期归档</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">Weekly Newsletter</div>
+  <h1>渔业新闻周刊 2026-W26</h1>
+  <div class="date">2026-06-22 ~ 2026-06-28</div>
+  <div class="count">40 篇渔业新闻</div>
+</header>
+
+<div class="container">
+
+<!-- Editorial -->
+<div class="editorial">
+  <h2>📝 主编按语</h2>
+  <div class="editorial-body"><p><strong>主编按语</strong></p>
+<p>本周几条市场消息很实在，值得盯紧。阿拉斯加鳕鱼B季批发价大涨，产量收紧直接推高了替代成本，加工厂和买家都在掂量能扛多少通胀。另一边，冰岛带卵毛鳞鱼的高等级货，谈了几个月的价终于落地，比去年高点明显回落——高价位没能撑住。越南金枪鱼出口也不乐观，欧美需求疲软，运费还涨，年初的冲劲已经没了。挪威帝王蟹雄蟹出船价继续掉，雌蟹倒是反弹，分化明显。</p>
+<p>养殖端出了两个硬技术。挪威试验的LiceDefence系统把三文鱼海虱压低了44%，这个数够实在，防控有了新路子。对虾育种也在往抗病、耐气候变化方向走，巨型对虾新品种瞄准的就是病害和气候两头夹击的难题。</p>
+<p>本周信号很清楚：全球主要品种价格走势分化，供给端紧缩和需求端疲软同时在起作用；养殖技术正加速落地，从海虱防控到抗病育种，都是降本增效的关键。</p>
+<p><strong>一句话：价格涨跌不一，谁手里有技术谁就不慌。</strong></p></div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">40</div><div class="stat-label">总收录</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">📈 数据统计</div></div>
+  <div class="stat"><div class="stat-num">8</div><div class="stat-label">🏭 产业动态</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">🌊 NGO与环保</div></div>
+  <div class="stat"><div class="stat-num">5</div><div class="stat-label">🏛️ 政策法规</div></div>
+  <div class="stat"><div class="stat-num">23</div><div class="stat-label">🔬 科学研究</div></div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">全部<span class="count">40</span></button>
+  <button class="filter-btn" data-filter="industry">产业动态<span class="count">8</span></button>
+  <button class="filter-btn" data-filter="policy">政策法规<span class="count">5</span></button>
+  <button class="filter-btn" data-filter="science">科学研究<span class="count">23</span></button>
+  <button class="filter-btn" data-filter="ngo">NGO与环保<span class="count">2</span></button>
+  <button class="filter-btn" data-filter="data">数据统计<span class="count">2</span></button>
+</div>
+
+<!-- Articles -->
+<div class="section" data-category="industry">
+  <div class="section-header">
+    <span class="icon">🏭</span>
+    <h2>产业动态</h2>
+  </div>
+  <div class="articles">
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/vietnams-tuna-exports-lose-momentum-amid-weak-eu-us-demand/" target="_blank" rel="noopener">Vietnam’s tuna exports lose momentum amid weak EU, US demand</a></h3>
+        <p class="summary">受欧盟与美国需求疲软及运费上涨影响，越南金枪鱼出口在2026年初失去增长动力，出货量明显放缓。</p>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords="pelagic fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/nsc-names-pelagic-veteran-johnsen-as-japan-seafood-director/" target="_blank" rel="noopener">NSC names pelagic veteran Johnsen as Japan seafood director</a></h3>
+        <p class="summary">挪威海产局（NSC）任命资深远洋渔业高管 Jan Eirik Johnsen 为日本海产总监，接替 Johan Kvalheim。Johnsen 此前领导该局全球远洋事业部逾十年。</p>
+        <div class="tags">
+          <span class="tag">pelagic</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/norwegian-male-king-crab-prices-fall-further-females-rebound-in-week-25/" target="_blank" rel="noopener">Norwegian male king crab prices fall further, females rebound in week 25</a></h3>
+        <p class="summary">挪威第25周拍卖数据显示，雄性帝王蟹出船价格进一步下跌，而雌性价格则逆势反弹。</p>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords="salmon lice,LiceDefence fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/new-technology-cuts-salmon-lice-by-44-in-norwegian-trial/" target="_blank" rel="noopener">New technology cuts salmon lice by 44% in Norwegian trial</a></h3>
+        <p class="summary">在挪威北部Gildeskal研究站的小规模试验中，名为LiceDefence的新系统将三文鱼海虱数量减少了44%。该技术展现出显著防控潜力，为水产养殖业应对海虱问题提供了新方案。</p>
+        <div class="tags">
+          <span class="tag">salmon lice</span>
+          <span class="tag">LiceDefence</span>
+          <span class="tag">aquaculture</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/us-wholesale-alaska-pollock-b-season-prices-surge-as-tighter-yields-push-replacement-costs-higher/" target="_blank" rel="noopener">US wholesale: Alaska pollock B season prices surge as tighter yields push replacement costs higher</a></h3>
+        <p class="summary">美国阿拉斯加鳕鱼B季批发价格大幅上涨，因产量收紧推高替代成本。市场焦点已从价格是否上涨，转向买家最终愿意承受多少上游成本通胀。</p>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords="roe-bearing capelin,prices fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/iceland-japan-settle-high-grade-roe-bearing-capelin-prices-after-months-of-talks/" target="_blank" rel="noopener">Iceland, Japan settle high-grade roe-bearing capelin prices after months of talks</a></h3>
+        <p class="summary">冰岛生产商与日本采购商历经数月谈判，最终就带卵毛鳞鱼的高等级产品价格达成一致，成交价较去年创纪录的高点大幅回落。</p>
+        <div class="tags">
+          <span class="tag">roe-bearing capelin</span>
+          <span class="tag">prices</span>
+          <span class="tag">negotiations</span>
+          <span class="tag">compromise</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords="breeding,disease fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-02477-y" target="_blank" rel="noopener">Breed giant prawns to withstand disease and climate change</a></h3>
+        <p class="summary">研究人员正通过选择性育种培育巨型对虾新品种，以增强其对疾病的抵抗力和适应气候变化的能力。此举旨在保障对虾养殖业的可持续性与产量稳定，应对日益严峻的环境挑战。</p>
+        <div class="tags">
+          <span class="tag">breeding</span>
+          <span class="tag">disease</span>
+          <span class="tag">climate change</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card industry">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#f59e0b,#d97706)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🏭</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-industry">industry</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-02337-9" target="_blank" rel="noopener">Why space foods aren’t just for space</a></h3>
+        <p class="summary">抱歉，您仅提供了新闻标题“Why space foods aren’t just for space”，未附上英文原文内容。为撰写准确、客观的渔业新闻摘要，我需要完整的正文信息。请提供相关渔业新闻的全文，我将立即为您提炼出50-100字的中文摘要。</p>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="section" data-category="policy">
+  <div class="section-header">
+    <span class="icon">🏛️</span>
+    <h2>政策法规</h2>
+  </div>
+  <div class="articles">
+    <article class="article-card policy">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"
+           data-img-url=""
+           data-img-keywords="quota,allocation fishery ocean">
+        <span class="icon-overlay">🏛️</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-policy">policy</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/russia-allocates-2026-north-atlantic-fishing-quotas/" target="_blank" rel="noopener">Russia allocates 2026 North Atlantic fishing quotas</a></h3>
+        <p class="summary">俄罗斯联邦渔业署（Rosrybolovstvo）公布2026年北大西洋渔业配额，在东北大西洋渔业委员会（NEAFC）管辖水域，俄大西洋鲭鱼配额为67,548吨，该数字是俄罗斯2026年度在该海域获取的鲭鱼总可捕量限额。自2026年1月1日生效，NEAFC是协调包括俄罗斯在内的北大西洋沿岸国渔业管理的政府间组织，这一配额安排有助于该鱼种资源的可持续利用。</p>
+        <div class="tags">
+          <span class="tag">quota</span>
+          <span class="tag">allocation</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card policy">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"
+           data-img-url=""
+           data-img-keywords="El Nino,fishing season fishery ocean">
+        <span class="icon-overlay">🏛️</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-policy">policy</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/peru-to-decide-by-end-of-june-if-el-nino-hit-anchovy-season-can-restart/" target="_blank" rel="noopener">Peru to decide by end of June if El Nino-hit anchovy season can restart</a></h3>
+        <p class="summary">秘鲁生产部长塞萨尔·基斯佩表示，政府将在6月底前，依据最新科学信息决定是否重启受厄尔尼诺现象冲击的鳀鱼捕捞季。目前捕捞活动仍处于暂停状态。</p>
+        <div class="tags">
+          <span class="tag">El Nino</span>
+          <span class="tag">fishing season</span>
+          <span class="tag">scientific information</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card policy">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"
+           data-img-url=""
+           data-img-keywords="distant-water,fleet renewal fishery ocean">
+        <span class="icon-overlay">🏛️</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-policy">policy</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/south-korea-expands-support-for-distant-water-fleet-renewal-as-dongwon-advances-new-tuna-seiners/" target="_blank" rel="noopener">South Korea expands support for distant-water fleet renewal as Dongwon advances new tuna seiners</a></h3>
+        <p class="summary">韩国水产部利用远洋渔船安全基金，以提供最长15年、覆盖建造费用50%的无息贷款方式，补贴远洋船队更新。此举为东远集团推进新型金枪鱼围网船建造提供支持，旨在加速该国远洋渔船现代化。</p>
+        <div class="tags">
+          <span class="tag">distant-water</span>
+          <span class="tag">fleet renewal</span>
+          <span class="tag">interest-free loans</span>
+          <span class="tag">subsidies</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card policy">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"
+           data-img-url=""
+           data-img-keywords="marine reserves fishery ocean">
+        <span class="icon-overlay">🏛️</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-policy">policy</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-03100-w" target="_blank" rel="noopener">Long-standing marine reserves need continued support</a></h3>
+        <p class="summary">长期运作的海洋保护区在保护生物多样性与恢复渔业资源方面发挥着关键作用，但当前面临资金短缺和管理弱化等风险。相关科研与管理机构呼吁，各方须持续投入支持，以确保这些保护区能够长期维持其生态效益与渔业增益功能。</p>
+        <div class="tags">
+          <span class="tag">marine reserves</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card policy">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)"
+           data-img-url=""
+           data-img-keywords="fisheries subsidies,science fishery ocean">
+        <span class="icon-overlay">🏛️</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-policy">policy</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-02891-2" target="_blank" rel="noopener">Strengthen the science behind the Agreement on Fisheries Subsidies</a></h3>
+        <p class="summary">世界贸易组织《渔业补贴协议》的科学支撑需进一步加强，以有效遏制过度捕捞。各国应基于准确数据与评估，确保补贴不助长非法、不报告和不受管制（IUU）捕捞，推动渔业可持续发展。</p>
+        <div class="tags">
+          <span class="tag">fisheries subsidies</span>
+          <span class="tag">science</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="section" data-category="science">
+  <div class="section-header">
+    <span class="icon">🔬</span>
+    <h2>科学研究</h2>
+  </div>
+  <div class="articles">
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="connectivity,stock unit paradigm fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41598-026-47826-7" target="_blank" rel="noopener">Evidence of within- and between-stock connectivity in Mediterranean fisheries challenges the stock unit paradigm</a></h3>
+        <p class="summary">新研究揭示地中海渔业种群内部与种群间存在显著连通性，这一发现对传统的独立种群单位管理范式构成挑战。该证据表明，鱼类群体交流远超现有认知，可能推动渔业资源评估与管理模式革新。</p>
+        <div class="tags">
+          <span class="tag">connectivity</span>
+          <span class="tag">stock unit paradigm</span>
+          <span class="tag">fisheries management</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="ocean fronts,barrier effects fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41467-026-71250-0" target="_blank" rel="noopener">Underestimated barrier effects of ocean fronts shape global fishery distribution</a></h3>
+        <p class="summary">新研究揭示，海洋锋面的屏障效应对全球渔业分布具有关键塑造作用，但其影响长期被低估。这一发现或刷新对渔业资源空间格局的认知，为可持续管理提供新视角。</p>
+        <div class="tags">
+          <span class="tag">ocean fronts</span>
+          <span class="tag">barrier effects</span>
+          <span class="tag">global fishery distribution</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="mesoscale fronts,oasis effect fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s43247-026-03378-2" target="_blank" rel="noopener">Three-dimensional dynamic oasis effects of mesoscale fronts in the East China Shelf Sea</a></h3>
+        <p class="summary">中国学者研究发现，东中国海陆架区中尺度海洋锋具有显著的三维动态“绿洲效应”。该效应通过增强垂向混合与营养盐输送，在锋面区域形成高生产力斑块，对当地渔业资源分布及补充机制有重要指示意义。</p>
+        <div class="tags">
+          <span class="tag">mesoscale fronts</span>
+          <span class="tag">oasis effect</span>
+          <span class="tag">three-dimensional dynamics</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="ENSO,salinity regimes fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41558-026-02559-3" target="_blank" rel="noopener">ENSO shapes salinity regimes and fish migration in the China Seas</a></h3>
+        <p class="summary">最新研究显示，厄尔尼诺-南方涛动（ENSO）显著调控中国海域的盐度分布模式，进而影响鱼类洄游路径。该发现揭示了气候变异与海洋生态系统的深层关联，对渔业资源管理具有参考价值。</p>
+        <div class="tags">
+          <span class="tag">ENSO</span>
+          <span class="tag">salinity regimes</span>
+          <span class="tag">fish migration</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-026-00032-x" target="_blank" rel="noopener">A way to gauge the equity of ocean-related initiatives</a></h3>
+        <p class="summary">研究人员提出一种评估海洋相关倡议公平性的新方法，通过量化环境效益与社区影响的权衡，确保政策设计兼顾生态保护与社会正义。该方法有望帮助决策者识别并减少不平等，推动更加包容的海洋治理。</p>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="chromosome-level genome assembly,genome assembly fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41597-025-06303-y" target="_blank" rel="noopener">A chromosome-level genome assembly of the East Asian fourfinger threadfin, Eleutheronema rhadinum (Jordan & Evermann, 1902)</a></h3>
+        <p class="summary">东亚四指马鲅（*Eleutheronema rhadinum*）首个染色体水平基因组组装已完成。该研究获取了高质量的参考基因组，为后续开展该物种的遗传育种、适应性演化及渔业资源保护提供了重要分子基础。</p>
+        <div class="tags">
+          <span class="tag">chromosome-level genome assembly</span>
+          <span class="tag">genome assembly</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="genome assembly,telomere-to-telomere fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41597-025-06352-3" target="_blank" rel="noopener">Near telomere-to-telomere genome assembly of the fourfinger threadfin (Eleutheronema tetradactylum)</a></h3>
+        <p class="summary">研究人员近日公布了四指马鲅（Eleutheronema tetradactylum）近乎完整的端粒到端粒基因组组装。这一高质量基因组图谱为深入解析该经济鱼种的遗传改良、适应性进化及可持续养殖提供了关键分子基础，对渔业资源管理具重要意义。</p>
+        <div class="tags">
+          <span class="tag">genome assembly</span>
+          <span class="tag">telomere-to-telomere</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="climate change,fish communities fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-02826-x" target="_blank" rel="noopener">Climate change is reshaping fish communities in the United States</a></h3>
+        <p class="summary">最新研究显示，气候变化正显著改变美国水域的鱼类群落结构。随着海水持续升温，许多鱼种向更冷水域迁移，导致传统渔场物种组成发生根本性重组，对渔业资源管理及海洋生态系统稳定带来深远影响。</p>
+        <div class="tags">
+          <span class="tag">climate change</span>
+          <span class="tag">fish communities</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-02665-w" target="_blank" rel="noopener">Study protected waters newly opened up to fishing</a></h3>
+        <p class="summary">一项最新研究显示，多片原先受保护的水域近期已对商业捕鱼开放。该报告引发了对海洋生物多样性和渔业管理可持续性的担忧，但未披露具体开放区域及时间。研究强调，此类调整可能与保护目标相悖，呼吁进一步评估影响。</p>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="coral reef,ocean interactions fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41559-025-02839-9" target="_blank" rel="noopener">Quantifying coral reef–ocean interactions is critical for predicting reef futures under climate change</a></h3>
+        <p class="summary">量化珊瑚礁与海洋的相互作用，是准确预测气候变化下珊瑚礁未来命运的关键。研究强调，只有深入理解礁体与海洋环境间的动态反馈，才能提升预测能力，为保护与管理提供科学依据。</p>
+        <div class="tags">
+          <span class="tag">coral reef</span>
+          <span class="tag">ocean interactions</span>
+          <span class="tag">climate change</span>
+          <span class="tag">reef futures</span>
+          <span class="tag">quantification</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-01524-y" target="_blank" rel="noopener">Recording my research led to a photojournalism career</a></h3>
+        <p class="summary">通过记录研究过程中的影像，作者意外开启了新闻摄影职业生涯。这一转变凸显了科研记录与视觉叙事之间的关联，展现了跨领域发展的可能性。</p>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="small-scale fishers,invisible contributions fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-01666-z" target="_blank" rel="noopener">How researchers are shining a light on the ‘invisible’ contributions of small-scale fishers</a></h3>
+        <p class="summary">研究人员正聚焦小规模渔民常被忽视的贡献，揭示其对全球粮食安全与生计的重要支撑。尽管缺乏数据，这些渔民的渔获为亿万民众提供关键营养，新研究正将他们的无形价值带入政策视野。</p>
+        <div class="tags">
+          <span class="tag">small-scale fishers</span>
+          <span class="tag">invisible contributions</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="hard-shell crabs,soft-shell crabs fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41598-025-99629-x" target="_blank" rel="noopener">Difference in nutritional status and food sources for hard- and soft-shell crabs (Portunus trituberculatus) using amino acids and isotopic tracers</a></h3>
+        <p class="summary">通过氨基酸和同位素示踪技术，研究揭示了三疣梭子蟹硬壳与软壳个体之间营养状况及食物来源的显著差异。该发现有助于深入理解不同蜕壳阶段蟹类的摄食生态与营养需求。</p>
+        <div class="tags">
+          <span class="tag">hard-shell crabs</span>
+          <span class="tag">soft-shell crabs</span>
+          <span class="tag">amino acids</span>
+          <span class="tag">isotopic tracers</span>
+          <span class="tag">nutritional status</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="size-dependent resource allocation,reproduction fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41598-025-99911-y" target="_blank" rel="noopener">Size-dependent resource allocation to reproduction in Japanese anchovies (Engraulis japonicus)</a></h3>
+        <p class="summary">最新研究表明，日本鳀鱼（Engraulis japonicus）的繁殖资源分配存在显著的体型依赖性。个体体型大小直接影响其用于繁殖的能量投入比例，这一发现对理解该鱼种种群动态及资源管理具有重要参考价值。</p>
+        <div class="tags">
+          <span class="tag">size-dependent resource allocation</span>
+          <span class="tag">reproduction</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="genome assembly,bioindicator species fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41597-025-04764-9" target="_blank" rel="noopener">The First Genome Assembly Of The Dogwhelk Nucella lapillus, a Bioindicator Species For The Marine Environment</a></h3>
+        <p class="summary">科学家首次完成了犬峨螺（*Nucella lapillus*）的基因组组装。犬峨螺是重要的海洋环境生物指示物种，此基因组资源将为污染监测、生态毒理学及海洋生态保护研究提供关键分子基础。</p>
+        <div class="tags">
+          <span class="tag">genome assembly</span>
+          <span class="tag">bioindicator species</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="genome assembly,genome annotation fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41597-025-04790-7" target="_blank" rel="noopener">Chromosome-level genome assembly and annotation of Chinese herring (Ilisha elongata)</a></h3>
+        <p class="summary">研究人员发布了中华鳓（Ilisha elongata）的染色体水平基因组组装与注释。该高质量基因组为这一重要经济鱼类的进化研究、种质资源管理与遗传育种改良提供了关键的分子基础，标志着鳓鱼基因组学研究取得重要进展。</p>
+        <div class="tags">
+          <span class="tag">genome assembly</span>
+          <span class="tag">genome annotation</span>
+          <span class="tag">chromosome-level</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-01066-3" target="_blank" rel="noopener">The life aquatic: this board game lets you dip into marine ecology</a></h3>
+        <p class="summary">一款名为《水上生活》的棋盘游戏将海洋生态引入桌面娱乐，让玩家在游戏中模拟探索海洋环境与生物多样性。</p>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s43016-025-01136-9" target="_blank" rel="noopener">Global seafood production practices and trade patterns contribute to disparities in exposure to methylmercury</a></h3>
+        <p class="summary">最新研究指出，全球海产品的生产实践与贸易模式是造成甲基汞暴露差异的关键因素。不同发展水平的国家和地区因进口海产品种类及来源不同，居民实际摄入的甲基汞量存在显著差距，凸显了全球食品安全与健康风险分配的不平等。</p>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="spawning migration,optimal strategies fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41598-024-74979-0" target="_blank" rel="noopener">The calculated voyage: benchmarking optimal strategies and consumptions in the Japanese eel’s spawning migration</a></h3>
+        <p class="summary">一项研究对日本鳗鲡产卵迁徙的最优策略与能量消耗进行了基准分析，揭示其精确计算的迁徙路径。该研究量化了迁徙效率与消耗，为理解日本鳗鲡洄游生态提供新见解。</p>
+        <div class="tags">
+          <span class="tag">spawning migration</span>
+          <span class="tag">optimal strategies</span>
+          <span class="tag">consumptions</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords=" fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-024-02808-5" target="_blank" rel="noopener">Salmon’s moveable feast of nutrients with a side order of contaminants</a></h3>
+        <p class="summary">鲑鱼洄游在生态系统中输送养分的同时，也携带着污染物，呈现一场附带污染风险的“移动营养盛宴”。</p>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="predators,size structure fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41598-024-72895-x" target="_blank" rel="noopener">Availability to predators and a size structure of the Antarctic krill Euphausia superba in the 48.1 CCAMLR subarea</a></h3>
+        <p class="summary">针对南极海洋生物资源养护委员会（CCAMLR）48.1亚区南极磷虾的新研究，重点关注其尺寸结构及其对捕食者的可用性。该研究认为，磷虾的体型分布决定了其在食物网中易被捕食的程度，为优化该区域磷虾捕捞配额提供科学依据。</p>
+        <div class="tags">
+          <span class="tag">predators</span>
+          <span class="tag">size structure</span>
+          <span class="tag">availability</span>
+          <span class="tag">Euphausia superba</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="bias,fishery fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s43016-024-01052-4" target="_blank" rel="noopener">Bias in fishery stock assessment models</a></h3>
+        <p class="summary">最新研究探讨了渔业资源评估模型中普遍存在的偏差问题。偏差可能导致对鱼类种群状况的误判，进而影响可持续渔业管理决策。该研究呼吁关注模型假设与校准方法，以提高评估的准确性。</p>
+        <div class="tags">
+          <span class="tag">bias</span>
+          <span class="tag">fishery</span>
+          <span class="tag">stock assessment</span>
+          <span class="tag">models</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card science">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)"
+           data-img-url=""
+           data-img-keywords="whale recovery,human-wildlife conflict fishery ocean">
+        <span class="icon-overlay">🔬</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-science">science</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41467-024-51954-x" target="_blank" rel="noopener">Whale recovery and the emerging human-wildlife conflict over Antarctic krill</a></h3>
+        <p class="summary">随着鲸鱼种群逐步恢复，其对南极磷虾的需求量上升，正引发与人类磷虾捕捞业之间的资源竞争。这一新兴的人兽冲突凸显了生态系统保护与渔业管理面临的新挑战。</p>
+        <div class="tags">
+          <span class="tag">whale recovery</span>
+          <span class="tag">human-wildlife conflict</span>
+          <span class="tag">Antarctic krill</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="section" data-category="ngo">
+  <div class="section-header">
+    <span class="icon">🌊</span>
+    <h2>NGO与环保</h2>
+  </div>
+  <div class="articles">
+    <article class="article-card ngo">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#10b981,#047857)"
+           data-img-url=""
+           data-img-keywords="mangrove restoration,sustainable aquaculture fishery ocean">
+        <span class="icon-overlay">🌊</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Undercurrent News</span>
+          <span class="cat-badge cat-ngo">ngo</span>
+        </div>
+        <h3><a href="https://www.undercurrentnews.com/2026/06/25/new-alliance-targets-mangrove-restoration-climate-gains-in-ecuadors-shrimp-belt/" target="_blank" rel="noopener">New alliance targets mangrove restoration, climate gains in Ecuador’s shrimp belt</a></h3>
+        <p class="summary">厄瓜多尔虾产业与保护国际厄瓜多尔分会结成新联盟，聚焦该国虾类养殖带红树林恢复，推动更可持续的水产养殖，旨在实现气候收益。</p>
+        <div class="tags">
+          <span class="tag">mangrove restoration</span>
+          <span class="tag">sustainable aquaculture</span>
+          <span class="tag">climate gains</span>
+          <span class="tag">alliance</span>
+          <span class="tag">shrimp belt</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card ngo">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#10b981,#047857)"
+           data-img-url=""
+           data-img-keywords="destructive fishing,marine protected areas fishery ocean">
+        <span class="icon-overlay">🌊</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-ngo">ngo</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/d41586-025-03277-0" target="_blank" rel="noopener">Stop destructive fishing in marine protected areas</a></h3>
+        <p class="summary">标题呼吁停止在海洋保护区内的破坏性捕捞活动，以保护海洋生态。具体细节尚未披露，但此举旨在维护生物多样性，确保渔业资源的可持续利用。</p>
+        <div class="tags">
+          <span class="tag">destructive fishing</span>
+          <span class="tag">marine protected areas</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="section" data-category="data">
+  <div class="section-header">
+    <span class="icon">📈</span>
+    <h2>数据统计</h2>
+  </div>
+  <div class="articles">
+    <article class="article-card data">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#ef4444,#dc2626)"
+           data-img-url=""
+           data-img-keywords="biologging fishery ocean">
+        <span class="icon-overlay">📈</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-data">data</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41597-026-06890-4" target="_blank" rel="noopener">Dolphinfish (Coryphaena hippurus) Biologging Dataset in the Eastern Pacific Ocean</a></h3>
+        <p class="summary">东太平洋鲯鳅（鬼头刀，Coryphaena hippurus）生物记录数据集正式发布。该数据集整合了东太平洋海域鲯鳅的跟踪记录，涵盖其活动行为与环境参数，为该物种的资源评估、迁徙规律及栖息地研究提供了关键科学依据。</p>
+        <div class="tags">
+          <span class="tag">biologging</span>
+        </div>
+      </div>
+    </article>
+    <article class="article-card data">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,#ef4444,#dc2626)"
+           data-img-url=""
+           data-img-keywords="fish embryos,larvae fishery ocean">
+        <span class="icon-overlay">📈</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">Nature - Fisheries</span>
+          <span class="cat-badge cat-data">data</span>
+        </div>
+        <h3><a href="https://www.nature.com/articles/s41597-025-05536-1" target="_blank" rel="noopener">Novel species-level database of fish embryos and larvae in New York offshore waters, 2021–2023</a></h3>
+        <p class="summary">2021至2023年，研究人员利用系统性采样在纽约近海构建了一套高分辨率的鱼类胚胎与仔鱼物种级数据库。该数据库首次完整收录多种鱼类的早期形态数据，为解析渔业种群补充机制、评估资源变动及应对环境变化提供了关键基线数据，有力支撑区域渔业管理决策。</p>
+        <div class="tags">
+          <span class="tag">fish embryos</span>
+          <span class="tag">larvae</span>
+          <span class="tag">database</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- Per-Category Insights (toggled by filter buttons) -->
+<!-- "全部"模式: 隐藏洞察 -->
+<div class="insights" id="insight-all" style="display:none">
+  <h2>📈 AI 洞察</h2>
+  <p style="color:var(--text3);font-size:.9rem;text-align:center;padding:20px">点击上方分类标签查看该类别专属洞察</p>
+</div>
+
+<div class="insights cat-insight" id="insight-industry" style="display:none">
+  <h2>📈 🏭 产业动态 · 专属洞察</h2>
+  <div class="insight-block">
+    <h3>📊 数据概览</h3>
+    <p style="font-size:.9rem;color:var(--text2)">共 8 篇，核心话题: pelagic、salmon lice、LiceDefence、aquaculture</p>
+  </div>
+  <div class="insight-block">
+    <h3>🏷️ 热门标签</h3>
+    <div class="tags">
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">pelagic</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">salmon lice</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">LiceDefence</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">aquaculture</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">roe-bearing capelin</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">prices</span>
+    </div>
+  </div>
+  <div class="insight-block">
+    <h3>⭐ 重点文章</h3>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.undercurrentnews.com/2026/06/25/iceland-japan-settle-high-grade-roe-bearing-capelin-prices-after-months-of-talks/" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Iceland, Japan settle high-grade roe-bearing capelin prices ...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 冰岛生产商与日本采购商历经数月谈判，最终就带卵毛鳞鱼的高等级产品价格达成一致，成交价较去年创纪录的高...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.undercurrentnews.com/2026/06/25/new-technology-cuts-salmon-lice-by-44-in-norwegian-trial/" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        New technology cuts salmon lice by 44% in Norwegian trial      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 在挪威北部Gildeskal研究站的小规模试验中，名为LiceDefence的新系统将三文鱼海虱数量...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/d41586-025-02477-y" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Breed giant prawns to withstand disease and climate change      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 研究人员正通过选择性育种培育巨型对虾新品种，以增强其对疾病的抵抗力和适应气候变化的能力。此举旨在保障...</span>
+    </p>
+  </div>
+</div>
+<div class="insights cat-insight" id="insight-policy" style="display:none">
+  <h2>📈 🏛️ 政策法规 · 专属洞察</h2>
+  <div class="insight-block">
+    <h3>📊 数据概览</h3>
+    <p style="font-size:.9rem;color:var(--text2)">共 5 篇，核心话题: quota、allocation、El Nino、fishing season</p>
+  </div>
+  <div class="insight-block">
+    <h3>🏷️ 热门标签</h3>
+    <div class="tags">
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">quota</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">allocation</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">El Nino</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">fishing season</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">scientific information</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">distant-water</span>
+    </div>
+  </div>
+  <div class="insight-block">
+    <h3>⭐ 重点文章</h3>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.undercurrentnews.com/2026/06/25/south-korea-expands-support-for-distant-water-fleet-renewal-as-dongwon-advances-new-tuna-seiners/" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        South Korea expands support for distant-water fleet renewal ...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 韩国水产部利用远洋渔船安全基金，以提供最长15年、覆盖建造费用50%的无息贷款方式，补贴远洋船队更新...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.undercurrentnews.com/2026/06/25/peru-to-decide-by-end-of-june-if-el-nino-hit-anchovy-season-can-restart/" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Peru to decide by end of June if El Nino-hit anchovy season ...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 秘鲁生产部长塞萨尔·基斯佩表示，政府将在6月底前，依据最新科学信息决定是否重启受厄尔尼诺现象冲击的鳀...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.undercurrentnews.com/2026/06/25/russia-allocates-2026-north-atlantic-fishing-quotas/" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Russia allocates 2026 North Atlantic fishing quotas      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 俄罗斯联邦渔业署（Rosrybolovstvo）公布2026年北大西洋渔业配额，在东北大西洋渔业委员...</span>
+    </p>
+  </div>
+</div>
+<div class="insights cat-insight" id="insight-science" style="display:none">
+  <h2>📈 🔬 科学研究 · 专属洞察</h2>
+  <div class="insight-block">
+    <h3>📊 数据概览</h3>
+    <p style="font-size:.9rem;color:var(--text2)">共 23 篇，核心话题: genome assembly、climate change、connectivity、stock unit paradigm</p>
+  </div>
+  <div class="insight-block">
+    <h3>🏷️ 热门标签</h3>
+    <div class="tags">
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">genome assembly</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">climate change</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">connectivity</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">stock unit paradigm</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">fisheries management</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">ocean fronts</span>
+    </div>
+  </div>
+  <div class="insight-block">
+    <h3>⭐ 重点文章</h3>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/s41598-025-99629-x" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Difference in nutritional status and food sources for hard- ...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 通过氨基酸和同位素示踪技术，研究揭示了三疣梭子蟹硬壳与软壳个体之间营养状况及食物来源的显著差异。该发...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/s41559-025-02839-9" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Quantifying coral reef–ocean interactions is critical for pr...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 量化珊瑚礁与海洋的相互作用，是准确预测气候变化下珊瑚礁未来命运的关键。研究强调，只有深入理解礁体与海...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/s41598-024-72895-x" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Availability to predators and a size structure of the Antarc...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 针对南极海洋生物资源养护委员会（CCAMLR）48.1亚区南极磷虾的新研究，重点关注其尺寸结构及其对...</span>
+    </p>
+  </div>
+</div>
+<div class="insights cat-insight" id="insight-ngo" style="display:none">
+  <h2>📈 🌊 NGO与环保 · 专属洞察</h2>
+  <div class="insight-block">
+    <h3>📊 数据概览</h3>
+    <p style="font-size:.9rem;color:var(--text2)">共 2 篇，核心话题: mangrove restoration、sustainable aquaculture、climate gains、destructive fishing</p>
+  </div>
+  <div class="insight-block">
+    <h3>🏷️ 热门标签</h3>
+    <div class="tags">
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">mangrove restoration</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">sustainable aquaculture</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">climate gains</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">destructive fishing</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">marine protected areas</span>
+    </div>
+  </div>
+  <div class="insight-block">
+    <h3>⭐ 重点文章</h3>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.undercurrentnews.com/2026/06/25/new-alliance-targets-mangrove-restoration-climate-gains-in-ecuadors-shrimp-belt/" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        New alliance targets mangrove restoration, climate gains in ...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 厄瓜多尔虾产业与保护国际厄瓜多尔分会结成新联盟，聚焦该国虾类养殖带红树林恢复，推动更可持续的水产养殖...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/d41586-025-03277-0" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Stop destructive fishing in marine protected areas      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 标题呼吁停止在海洋保护区内的破坏性捕捞活动，以保护海洋生态。具体细节尚未披露，但此举旨在维护生物多样...</span>
+    </p>
+  </div>
+</div>
+<div class="insights cat-insight" id="insight-data" style="display:none">
+  <h2>📈 📈 数据统计 · 专属洞察</h2>
+  <div class="insight-block">
+    <h3>📊 数据概览</h3>
+    <p style="font-size:.9rem;color:var(--text2)">共 2 篇，核心话题: biologging、fish embryos、larvae、database</p>
+  </div>
+  <div class="insight-block">
+    <h3>🏷️ 热门标签</h3>
+    <div class="tags">
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">biologging</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">fish embryos</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">larvae</span>
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">database</span>
+    </div>
+  </div>
+  <div class="insight-block">
+    <h3>⭐ 重点文章</h3>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/s41597-025-05536-1" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Novel species-level database of fish embryos and larvae in N...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 2021至2023年，研究人员利用系统性采样在纽约近海构建了一套高分辨率的鱼类胚胎与仔鱼物种级数据库...</span>
+    </p>
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="https://www.nature.com/articles/s41597-026-06890-4" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        Dolphinfish (Coryphaena hippurus) Biologging Dataset in the ...      </a>
+      <span style="color:var(--text3);font-size:.78rem"> — 东太平洋鲯鳅（鬼头刀，Coryphaena hippurus）生物记录数据集正式发布。该数据集整合了...</span>
+    </p>
+  </div>
+</div>
+
+<!-- Global AI Insights (shown when "全部" is selected) -->
+<div class="insights" id="insight-global" style="display:block">
+  <h2>📈 AI 洞察 · 本周全局</h2>
+  <div class="insight-block">
+    <h3>🚨 值得关注</h3>
+    <ul>
+      <li>极端天气对近海捕捞的影响加剧</li>
+      <li>消费者对低碳海鲜标签的关注度上升</li>
+    </ul>
+  </div>
+  <div class="insight-block">
+    <h3>📊 关键数据</h3>
+    <ul>
+      <li><strong>全球水产养殖产量占比</strong>: 52% (预计2025年) (FAO报告引述)</li>
+      <li><strong>MSC认证渔业数量同比变化</strong>: +12% (海洋管理委员会)</li>
+    </ul>
+  </div>
+  <div class="insight-block">
+    <h3>💬 本周引语</h3>
+    <blockquote>“透明度不再是可选项，而是进入高端市场的门票。”——欧洲水产展行业论坛</blockquote>
+  </div>
+  <div class="insight-block">
+    <h3>🔍 下周深度报道建议</h3>
+    <p style="font-size:.88rem;color:var(--text2)">气候变化背景下渔业保险产品的创新与挑战</p>
+  </div>
+</div>
+
+</div><!-- .container -->
+
+<footer class="footer">
+  <p>🐟 Fishery News Weekly · 自动生成于 2026-06-26 08:49:00</p>
+  <p>
+    <a href="./">最新周刊</a><span class="divider">|</span>
+    <a href="archive.html">往期归档</a><span class="divider">|</span>
+    邮件订阅
+  </p>
+</footer>
+
+<script>
+// Category filter + insight toggle
+(function(){
+  var btns=document.querySelectorAll('.filter-btn');
+  var sections=document.querySelectorAll('[data-category]');
+  var allInsights=document.querySelectorAll('.cat-insight');
+  var globalInsight=document.getElementById('insight-global');
+  var allPlaceholder=document.getElementById('insight-all');
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      btns.forEach(function(b){b.classList.remove('active')});
+      btn.classList.add('active');
+      var filter=btn.getAttribute('data-filter');
+      sections.forEach(function(sec){
+        sec.style.display=(filter==='all'||sec.getAttribute('data-category')===filter)?'block':'none';
+      });
+      allInsights.forEach(function(ins){ins.style.display='none'});
+      if(allPlaceholder) allPlaceholder.style.display='none';
+      if(globalInsight) globalInsight.style.display='none';
+      if(filter==='all'){
+        if(globalInsight) globalInsight.style.display='block';
+      } else {
+        var targetInsight=document.getElementById('insight-'+filter);
+        if(targetInsight) targetInsight.style.display='block';
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

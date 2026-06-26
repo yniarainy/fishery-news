@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ issue.title }} — Fishery News Weekly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --text: #1a202c;
+  --text2: #64748b;
+  --text3: #94a3b8;
+  --border: #e2e8f0;
+  --primary: #0ea5e9;
+  --primary-dark: #0369a1;
+  --primary-light: #e0f2fe;
+  --accent: #06b6d4;
+  --policy: #3b82f6;
+  --policy-bg: #eff6ff;
+  --science: #8b5cf6;
+  --science-bg: #f5f3ff;
+  --industry: #f59e0b;
+  --industry-bg: #fffbeb;
+  --ngo: #10b981;
+  --ngo-bg: #ecfdf5;
+  --data: #ef4444;
+  --data-bg: #fef2f2;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,.08), 0 8px 40px rgba(0,0,0,.04);
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.container{max-width:900px;margin:0 auto;padding:0 20px}
+
+/* ── Navigation ── */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;max-width:900px;margin:0 auto}
+.nav-brand{font-weight:800;font-size:1.1rem;color:var(--primary-dark);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-brand .icon{font-size:1.4rem}
+.nav-links{display:flex;gap:16px;align-items:center}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 12px;border-radius:8px;transition:var(--transition)}
+.nav-links a:hover,.nav-links a.active{color:var(--primary);background:var(--primary-light)}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 30%,#0284c7 60%,#0ea5e9 100%);
+  padding:48px 20px 40px;text-align:center;color:#fff;position:relative;overflow:hidden;
+  margin-bottom:32px;border-radius:0 0 40px 40px;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 70%,rgba(255,255,255,.08) 0%,transparent 50%),
+             radial-gradient(circle at 70% 30%,rgba(255,255,255,.05) 0%,transparent 50%);
+  animation:heroShimmer 20s linear infinite;
+}
+@keyframes heroShimmer{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.hero *{position:relative;z-index:1}
+.hero-badge{
+  display:inline-block;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);
+  padding:4px 14px;border-radius:99px;font-size:.75rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;
+}
+.hero h1{font-size:2.2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:6px}
+.hero .date{font-size:.95rem;opacity:.85;font-weight:400}
+.hero .count{
+  display:inline-block;margin-top:10px;background:rgba(255,255,255,.2);
+  padding:5px 16px;border-radius:99px;font-size:.82rem;font-weight:600;
+}
+
+/* ── Filter Bar ── */
+.filter-bar{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;
+  padding:0 20px;
+}
+.filter-btn{
+  padding:7px 18px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);
+  font-size:.82rem;font-weight:600;color:var(--text2);cursor:pointer;
+  transition:var(--transition);font-family:inherit;white-space:nowrap;line-height:1.4;
+}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary)}
+.filter-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.filter-btn .count{font-size:.7rem;opacity:.7;margin-left:3px}
+
+/* ── Stats Row ── */
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.stat{
+  flex:1;min-width:90px;background:var(--surface);border-radius:var(--radius-sm);
+  padding:16px;text-align:center;box-shadow:var(--shadow);transition:var(--transition);
+}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat-num{font-size:2rem;font-weight:800;color:var(--primary-dark);line-height:1.1}
+.stat-label{font-size:.75rem;color:var(--text3);margin-top:2px;font-weight:500}
+
+/* ── Editorial ── */
+.editorial{
+  background:linear-gradient(135deg,#f0f9ff,#ecfeff);border-radius:var(--radius);
+  padding:28px 32px;margin-bottom:28px;box-shadow:var(--shadow);
+  border:1px solid #bae6fd;
+}
+.editorial h2{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin-bottom:10px}
+.editorial p{font-size:.95rem;color:#334155;line-height:1.8}
+.editorial-body p{margin-bottom:10px}
+.editorial-body p:last-child{margin-bottom:0}
+.editorial-body strong{color:#0c4a6e;font-weight:700}
+
+/* ── Section ── */
+.section{margin-bottom:28px}
+.section-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  padding-bottom:10px;border-bottom:2px solid var(--border);
+}
+.section-header .icon{font-size:1.4rem}
+.section-header h2{font-size:1.25rem;font-weight:700}
+
+/* ── Article Card (magazine layout with image) ── */
+.articles{display:flex;flex-direction:column;gap:14px}
+.article-card{
+  background:var(--surface);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);transition:var(--transition);
+  display:flex;align-items:stretch;min-height:120px;
+}
+.article-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.article-card .card-img{
+  width:180px;min-width:180px;flex-shrink:0;
+  background-size:cover;background-position:center;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.article-card .card-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.15) 100%);
+}
+.article-card .card-img .icon-overlay{
+  font-size:2.8rem;opacity:.35;position:relative;z-index:1;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));
+  transition:transform .3s;
+}
+.article-card:hover .card-img .icon-overlay{
+  transform:scale(1.15);
+}
+.article-card .card-body{
+  flex:1;padding:16px 20px;display:flex;flex-direction:column;justify-content:center;
+  min-width:0;
+}
+.article-card .card-body .meta{
+  display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;
+}
+.article-card .card-body .source{
+  font-size:.7rem;color:var(--text3);font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.article-card .card-body .cat-badge{
+  font-size:.64rem;padding:2px 8px;border-radius:99px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.03em;
+}
+.cat-policy{background:var(--policy-bg);color:var(--policy)}
+.cat-science{background:var(--science-bg);color:var(--science)}
+.cat-industry{background:var(--industry-bg);color:var(--industry)}
+.cat-ngo{background:var(--ngo-bg);color:var(--ngo)}
+.cat-data{background:var(--data-bg);color:var(--data)}
+.article-card .card-body h3{font-size:1rem;font-weight:600;margin-bottom:4px;line-height:1.4}
+.article-card .card-body h3 a{color:var(--text);text-decoration:none;transition:var(--transition);word-break:break-word}
+.article-card .card-body h3 a:hover{color:var(--primary-dark)}
+.article-card .card-body .summary{font-size:.84rem;color:var(--text2);line-height:1.55;margin-bottom:6px}
+.article-card .card-body .tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{
+  font-size:.66rem;padding:2px 7px;border-radius:99px;
+  background:#f1f5f9;color:#64748b;font-weight:500;
+}
+@media(max-width:640px){
+  .article-card{flex-direction:column}
+  .article-card .card-img{width:100%;min-width:100%;height:140px}
+  .article-card .card-body{padding:14px 16px}
+}
+
+/* ── Insights ── */
+.insights{
+  background:var(--surface);border-radius:var(--radius);padding:24px 28px;
+  box-shadow:var(--shadow);margin-bottom:28px;
+}
+.insights h2{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin-bottom:14px}
+.insight-block{margin-bottom:16px}
+.insight-block h3{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.insight-block ul{list-style:none;padding:0}
+.insight-block li{padding:6px 0;font-size:.88rem;color:var(--text2);border-bottom:1px solid var(--border)}
+.insight-block li:last-child{border-bottom:none}
+.insight-block blockquote{
+  border-left:3px solid var(--primary);padding:8px 14px;margin:8px 0;
+  background:var(--primary-light);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-style:italic;color:#334155;
+}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;padding:32px 20px;color:var(--text3);font-size:.82rem;
+  border-top:1px solid var(--border);margin-top:32px;
+}
+.footer a{color:var(--primary);text-decoration:none}
+.footer .divider{margin:0 8px;color:var(--border)}
+
+/* ── Mobile ── */
+@media(max-width:640px){
+  .hero h1{font-size:1.5rem}
+  .hero{padding:36px 16px 32px;border-radius:0 0 28px 28px}
+  .editorial{padding:18px 20px}
+  .article-card{padding:14px 16px}
+  .stats{gap:6px}
+  .stat{padding:12px 8px}
+  .stat-num{font-size:1.5rem}
+  .nav{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a href="{{ relative_root }}./" class="nav-brand"><span class="icon">🐟</span>Fishery News Weekly</a>
+  <div class="nav-links">
+    <a href="{{ relative_root }}./" class="active">最新周刊</a>
+    <a href="{{ relative_root }}archive.html">往期归档</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">Weekly Newsletter</div>
+  <h1>{{ issue.title }}</h1>
+  <div class="date">{{ issue.period_start }} ~ {{ issue.period_end }}</div>
+  <div class="count">{{ issue.article_count }} 篇渔业新闻</div>
+</header>
+
+<div class="container">
+
+<!-- Editorial -->
+{% if weekly_editorial %}
+<div class="editorial">
+  <h2>📝 主编按语</h2>
+  <div class="editorial-body">{{ weekly_editorial | safe }}</div>
+</div>
+{% endif %}
+
+<!-- Stats -->
+<div class="stats">
+  {% set total = issue.article_count %}
+  <div class="stat"><div class="stat-num">{{ total }}</div><div class="stat-label">总收录</div></div>
+  {% for cat, count in category_distribution.items() %}
+  <div class="stat"><div class="stat-num">{{ count }}</div><div class="stat-label">{{ cat_labels.get(cat, cat) }}</div></div>
+  {% endfor %}
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">全部<span class="count">{{ issue.article_count }}</span></button>
+  {% for group in grouped_articles %}
+  <button class="filter-btn" data-filter="{{ group.category }}">{{ group.cat_label }}<span class="count">{{ group.count }}</span></button>
+  {% endfor %}
+</div>
+
+<!-- Articles -->
+{% for group in grouped_articles %}
+<div class="section" data-category="{{ group.category }}">
+  <div class="section-header">
+    <span class="icon">{{ group.cat_icon }}</span>
+    <h2>{{ group.cat_label }}</h2>
+  </div>
+  <div class="articles">
+    {% for article in group.articles %}
+    <article class="article-card {{ group.category }}">
+      <div class="card-img lazy-img"
+           style="background:linear-gradient(135deg,{{ article.category_color }})"
+           data-img-url="{{ article.image_url }}"
+           data-img-keywords="{{ article.tags[:2]|join(',') }} fishery ocean">
+        <span class="icon-overlay">{{ group.cat_icon }}</span>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="source">{{ article.source_name }}</span>
+          <span class="cat-badge cat-{{ group.category }}">{{ group.category }}</span>
+        </div>
+        <h3><a href="{{ article.url }}" target="_blank" rel="noopener">{{ article.title }}</a></h3>
+        {% if article.summary_cn %}
+        <p class="summary">{{ article.summary_cn }}</p>
+        {% endif %}
+        {% if article.tags %}
+        <div class="tags">
+          {% for tag in article.tags[:5] %}
+          <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+<!-- Per-Category Insights (toggled by filter buttons) -->
+<!-- "全部"模式: 隐藏洞察 -->
+<div class="insights" id="insight-all" style="display:none">
+  <h2>📈 AI 洞察</h2>
+  <p style="color:var(--text3);font-size:.9rem;text-align:center;padding:20px">点击上方分类标签查看该类别专属洞察</p>
+</div>
+
+{% for group in grouped_articles %}
+<div class="insights cat-insight" id="insight-{{ group.category }}" style="display:none">
+  <h2>📈 {{ group.cat_icon }} {{ group.cat_label }} · 专属洞察</h2>
+  <div class="insight-block">
+    <h3>📊 数据概览</h3>
+    <p style="font-size:.9rem;color:var(--text2)">{{ group.insight.summary }}</p>
+  </div>
+  {% if group.insight.top_tags %}
+  <div class="insight-block">
+    <h3>🏷️ 热门标签</h3>
+    <div class="tags">
+    {% for tag in group.insight.top_tags %}
+      <span class="tag" style="font-size:.78rem;padding:4px 10px">{{ tag }}</span>
+    {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% if group.insight.highlights %}
+  <div class="insight-block">
+    <h3>⭐ 重点文章</h3>
+    {% for article in group.insight.highlights %}
+    <p style="font-size:.85rem;margin:4px 0">
+      <a href="{{ article.url }}" target="_blank" style="color:var(--primary-dark);text-decoration:none">
+        {{ article.title[:60] }}{% if article.title|length > 60 %}...{% endif %}
+      </a>
+      {% if article.summary_cn %}
+      <span style="color:var(--text3);font-size:.78rem"> — {{ article.summary_cn[:50] }}...</span>
+      {% endif %}
+    </p>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endfor %}
+
+<!-- Global AI Insights (shown when "全部" is selected) -->
+{% if weekly_insight.rising_concerns or weekly_insight.key_data_points or weekly_insight.deep_dive_suggestion %}
+<div class="insights" id="insight-global" style="display:block">
+  <h2>📈 AI 洞察 · 本周全局</h2>
+  {% if weekly_insight.rising_concerns %}
+  <div class="insight-block">
+    <h3>🚨 值得关注</h3>
+    <ul>
+    {% for c in weekly_insight.rising_concerns %}
+      <li>{{ c }}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% if weekly_insight.key_data_points %}
+  <div class="insight-block">
+    <h3>📊 关键数据</h3>
+    <ul>
+    {% for dp in weekly_insight.key_data_points %}
+      <li><strong>{{ dp.metric }}</strong>: {{ dp.value }}{% if dp.source %} ({{ dp.source }}){% endif %}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% if weekly_insight.weekly_quote %}
+  <div class="insight-block">
+    <h3>💬 本周引语</h3>
+    <blockquote>{{ weekly_insight.weekly_quote }}</blockquote>
+  </div>
+  {% endif %}
+  {% if weekly_insight.deep_dive_suggestion %}
+  <div class="insight-block">
+    <h3>🔍 下周深度报道建议</h3>
+    <p style="font-size:.88rem;color:var(--text2)">{{ weekly_insight.deep_dive_suggestion }}</p>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+</div><!-- .container -->
+
+<footer class="footer">
+  <p>🐟 Fishery News Weekly · 自动生成于 {{ generated_at }}</p>
+  <p>
+    <a href="{{ relative_root }}./">最新周刊</a><span class="divider">|</span>
+    <a href="{{ relative_root }}archive.html">往期归档</a><span class="divider">|</span>
+    邮件订阅
+  </p>
+</footer>
+
+<script>
+// Category filter + insight toggle
+(function(){
+  var btns=document.querySelectorAll('.filter-btn');
+  var sections=document.querySelectorAll('[data-category]');
+  var allInsights=document.querySelectorAll('.cat-insight');
+  var globalInsight=document.getElementById('insight-global');
+  var allPlaceholder=document.getElementById('insight-all');
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      btns.forEach(function(b){b.classList.remove('active')});
+      btn.classList.add('active');
+      var filter=btn.getAttribute('data-filter');
+      sections.forEach(function(sec){
+        sec.style.display=(filter==='all'||sec.getAttribute('data-category')===filter)?'block':'none';
+      });
+      allInsights.forEach(function(ins){ins.style.display='none'});
+      if(allPlaceholder) allPlaceholder.style.display='none';
+      if(globalInsight) globalInsight.style.display='none';
+      if(filter==='all'){
+        if(globalInsight) globalInsight.style.display='block';
+      } else {
+        var targetInsight=document.getElementById('insight-'+filter);
+        if(targetInsight) targetInsight.style.display='block';
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

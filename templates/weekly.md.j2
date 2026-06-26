@@ -1,0 +1,88 @@
+{# Fishery News Weekly — Markdown Template #}
+# 🐟 {{ issue.title }}
+
+**{{ issue.period_start }} ~ {{ issue.period_end }}** | 共收录 {{ issue.article_count }} 篇渔业新闻
+
+---
+
+## 📝 主编按语
+
+{{ weekly_insight.headline_trend }}
+
+{% if weekly_editorial %}{{ weekly_editorial }}{% endif %}
+
+---
+
+## 🔥 本周热点
+
+{% for topic in weekly_insight.hot_topics %}
+- 🔸 {{ topic }}
+{% else %}
+- 本周暂无特别热点
+{% endfor %}
+
+---
+
+## 📊 分类速览
+
+| 分类 | 篇数 |
+|------|------|
+{% for cat, count in category_distribution.items() %}
+| {{ cat_labels.get(cat, cat) }} | {{ count }} |
+{% endfor %}
+
+---
+
+## 📰 要闻详情
+
+{# 按分类展示，每篇附带中文摘要和标签 #}
+{% for cat, cat_name in cat_order %}
+{% set cat_articles = articles | selectattr('category', 'equalto', cat) | list %}
+{% if cat_articles %}
+
+### {{ cat_name }}
+
+{% for article in cat_articles %}
+{{ loop.index }}. **[{{ article.title }}]({{ article.url }})**
+   📍 *{{ article.source_name }}*
+{% if article.summary_cn %}
+   > {{ article.summary_cn }}
+{% endif %}
+{% if article.tags %}   🏷️ {{ article.tags[:6] | join(' · ') }}{% endif %}
+
+{% endfor %}
+
+---
+{% endif %}
+{% endfor %}
+
+## 📈 AI 洞察
+
+{% if weekly_insight.rising_concerns %}
+### 🚨 值得关注
+{% for concern in weekly_insight.rising_concerns %}
+- {{ concern }}
+{% endfor %}
+{% endif %}
+
+{% if weekly_insight.key_data_points %}
+### 📊 关键数据
+{% for dp in weekly_insight.key_data_points %}
+- **{{ dp.metric }}**: {{ dp.value }} {% if dp.source %}(来源: {{ dp.source }}){% endif %}
+{% endfor %}
+{% endif %}
+
+{% if weekly_insight.weekly_quote %}
+### 💬 本周引语
+> {{ weekly_insight.weekly_quote }}
+{% endif %}
+
+{% if weekly_insight.deep_dive_suggestion %}
+### 🔍 下周深度报道建议
+{{ weekly_insight.deep_dive_suggestion }}
+{% endif %}
+
+---
+
+*本刊由 Fishery News Weekly 自动生成 | 生成时间: {{ generated_at }}*
+*共 {{ issue.article_count }} 篇 | 信源: Undercurrent News / Nature Fisheries*

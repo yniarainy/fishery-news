@@ -1,0 +1,78 @@
+# Fishery News Weekly — 全局配置
+# 敏感信息通过环境变量覆盖: FISHERY_NEWS_<SECTION>_<KEY>
+
+app:
+  name: "渔业新闻周刊"
+  timezone: "Asia/Shanghai"
+  debug: false
+
+llm:
+  provider: "deepseek"
+  api_key: "${DEEPSEEK_API_KEY}"
+  base_url: "https://api.deepseek.com"
+  model: "deepseek-v4-pro"              # 主模型：分类/摘要/洞察（高质量）
+  embedding_model: "deepseek-v4-flash"  # Embedding 模型：速度快成本低
+  max_tokens: 4096
+  temperature: 0.3
+  # 批量处理大小
+  batch_size: 10
+
+storage:
+  sqlite_path: "data/fishery_news.db"
+  chroma_path: "data/chroma"
+  raw_data_path: "data/raw"
+  output_path: "data/output"
+
+collection:
+  # 采集时的请求头
+  user_agent: "FisheryNewsBot/0.1 (+https://github.com/fishery-news)"
+  request_timeout: 30
+  max_articles_per_source: 50
+  # 两次请求间延迟(秒)
+  rate_limit_delay: 1.0
+
+dedup:
+  # 向量去重相似度阈值 (0-1)
+  similarity_threshold: 0.92
+  # 查重窗口(天)
+  lookback_days: 30
+
+cluster:
+  # 聚类相似度阈值
+  similarity_threshold: 0.82
+  # 每个聚类最小文章数
+  min_cluster_size: 1
+
+prefilter:
+  # 无关关键词黑名单（不区分大小写）
+  keyword_blacklist:
+    - "sports fishing"
+    - "fishing game"
+    - "fishing tournament"
+    - "fishing tackle"
+    - "fishing gear sale"
+    - "fishing charter"
+    - "fishing vacation"
+    - "fishing trip"
+    - "angling club"
+    - "bass pro shop"
+  # 允许的语言
+  allowed_languages:
+    - "en"
+    - "zh"
+    - "zh-cn"
+
+output:
+  site_dir: "site"
+  newsletter_template: "weekly.md.j2"
+  site_template: "index.html.j2"
+
+# 微信公众号配置（通过环境变量设置）
+wechat:
+  app_id: "${WECHAT_APP_ID}"
+  app_secret: "${WECHAT_APP_SECRET}"
+
+# Notion 配置（通过环境变量设置）
+notion:
+  api_key: "${NOTION_API_KEY}"
+  database_id: "${NOTION_DATABASE_ID}"

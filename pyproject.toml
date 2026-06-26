@@ -1,0 +1,35 @@
+[project]
+name = "fishery-news"
+version = "0.1.0"
+description = "渔业新闻周刊自动聚合系统 - Automated Fishery News Weekly Aggregator"
+requires-python = ">=3.9"
+dependencies = [
+    "httpx>=0.28.0",
+    "feedparser>=6.0.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=5.3.0",
+    "openai>=1.60.0",          # DeepSeek API (OpenAI-compatible)
+    "chromadb>=0.5.0",
+    "pydantic>=2.10.0",
+    "pyyaml>=6.0.0",
+    "jinja2>=3.1.0",
+    "python-dateutil>=2.9.0",
+    "rich>=13.0.0",            # 终端美化输出
+    "langdetect>=1.0.9",       # 语言检测
+    "tenacity>=9.0.0",         # 重试机制
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-httpx>=0.34.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"

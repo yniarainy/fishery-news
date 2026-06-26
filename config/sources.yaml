@@ -1,0 +1,397 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║         Fishery News Weekly — Source Ecosystem             ║
+# ║              信源生态系统（4层采集策略）                      ║
+# ╚══════════════════════════════════════════════════════════════╝
+#
+# 采集层级:
+#   L1: RSS       — 维护成本最低，优先使用
+#   L2: API       — 结构化数据，Crossref/OpenAlex/GFW 等
+#   L3: Crawl     — 网页解析，Jina Reader / Firecrawl
+#   L4: Search    — LLM 驱动的搜索发现
+#
+# 信息一级类别 (category):
+#   policy       — 政策法规/国际组织/政府/RFMO
+#   research     — 科研论文/预印本/数据集
+#   industry     — 产业媒体/企业动态/市场行情
+#   market       — 价格/贸易/供应链
+#   environment  — 气候/海洋/遥感/生态
+#   technology   — AI/卫星/装备/数字渔业
+#   funding      — 科研资助/国际项目/基金
+#   ngo          — 环保组织/可持续认证/倡议
+#
+# status: verified = 已测试 | untested = 未测试 | broken = 待修复
+
+sources:
+
+  # =====================================================================
+  # L1: RSS 采集（优先级 ★★★★★）— 维护成本几乎为 0
+  # =====================================================================
+
+  # --- 产业媒体 ---
+  - id: undercurrentnews
+    name: "Undercurrent News"
+    layer: rss
+    url: "https://www.undercurrentnews.com/feed"
+    category: industry
+    language: en
+    enabled: true
+    weight: 5
+    description: "全球海产品贸易新闻领导者"
+    status: verified
+
+  - id: seafoodsource
+    name: "SeafoodSource"
+    layer: rss
+    url: "https://www.seafoodsource.com/feed"
+    category: industry
+    language: en
+    enabled: false  # Cloudflare 403
+    weight: 5
+    description: "海产品行业新闻与分析"
+    status: broken
+    fallback_layer: crawl
+    note: "Cloudflare 保护; 改用 Jina Reader 抓取"
+
+  - id: intrafish
+    name: "IntraFish"
+    layer: rss
+    url: "https://www.intrafish.com/feed"
+    category: industry
+    language: en
+    enabled: false  # Cloudflare
+    weight: 5
+    description: "全球渔业与水产新闻"
+    status: broken
+    fallback_layer: crawl
+
+  - id: thefishsite
+    name: "The Fish Site"
+    layer: rss
+    url: "https://thefishsite.com/articles/feed"
+    category: industry
+    language: en
+    enabled: false  # XML malformed
+    weight: 4
+    description: "水产养殖与渔业知识平台"
+    status: broken
+    fallback_layer: crawl
+
+  - id: worldfishing
+    name: "World Fishing"
+    layer: rss
+    url: "https://www.worldfishing.net/feed"
+    category: industry
+    language: en
+    enabled: false
+    weight: 4
+    description: "全球商业渔业新闻"
+    status: untested
+
+  # --- 科研期刊 ---
+  - id: nature-fisheries
+    name: "Nature - Fisheries"
+    layer: rss
+    url: "https://www.nature.com/subjects/fisheries.rss"
+    category: research
+    language: en
+    enabled: true
+    weight: 5
+    description: "Nature 渔业相关研究"
+    status: verified
+
+  - id: science-news
+    name: "Science News"
+    layer: rss
+    url: "https://www.science.org/rss/news_current.xml"
+    category: research
+    language: en
+    enabled: false
+    weight: 4
+    description: "Science 期刊新闻（含海洋/生态）"
+    status: untested
+
+  - id: fish-fisheries-journal
+    name: "Fish and Fisheries"
+    layer: rss
+    url: "https://onlinelibrary.wiley.com/feed/14672979/most-recent"
+    category: research
+    language: en
+    enabled: false
+    weight: 5
+    description: "Fish and Fisheries 期刊 (Wiley)"
+    status: untested
+
+  # --- 政策/国际组织 ---
+  - id: fao-fisheries
+    name: "FAO Fisheries"
+    layer: rss
+    url: "https://www.fao.org/fishery/en/news/rss"
+    category: policy
+    language: en
+    enabled: false  # XML parse error
+    weight: 5
+    description: "联合国粮农组织渔业新闻"
+    status: broken
+    fallback_layer: crawl
+    crawl_url: "https://www.fao.org/fishery/en/news"
+
+  - id: noaa-fisheries
+    name: "NOAA Fisheries"
+    layer: rss
+    url: "https://www.fisheries.noaa.gov/rss/feature-stories"
+    category: policy
+    language: en
+    enabled: false
+    weight: 5
+    description: "美国国家海洋渔业局"
+    status: untested
+
+  - id: eu-fisheries
+    name: "EU Fisheries & Oceans"
+    layer: rss
+    url: "https://oceans-and-fisheries.ec.europa.eu/rss_en.xml"
+    category: policy
+    language: en
+    enabled: false
+    weight: 5
+    description: "欧盟海洋与渔业政策"
+    status: untested
+
+  # --- NGO ---
+  - id: global-fishing-watch
+    name: "Global Fishing Watch"
+    layer: rss
+    url: "https://globalfishingwatch.org/feed"
+    category: ngo
+    language: en
+    enabled: false
+    weight: 5
+    description: "全球渔业监测组织"
+    status: untested
+
+  - id: msc-news
+    name: "MSC"
+    layer: crawl  # RSS URL 已失效
+    url: "https://www.msc.org/media-centre/press-releases"
+    category: ngo
+    language: en
+    enabled: false
+    weight: 4
+    description: "海洋管理委员会新闻"
+    status: untested
+
+  - id: wwf-oceans
+    name: "WWF Oceans"
+    layer: rss
+    url: "https://www.worldwildlife.org/initiatives/oceans/rss"
+    category: ngo
+    language: en
+    enabled: false
+    weight: 4
+    description: "WWF 海洋项目"
+    status: untested
+
+  # --- 数据平台 ---
+  - id: ourworldindata
+    name: "Our World in Data"
+    layer: rss
+    url: "https://ourworldindata.org/atom.xml"
+    category: environment
+    language: en
+    enabled: false
+    weight: 4
+    description: "数据看世界（含渔业/海洋数据）"
+    status: untested
+
+  # =====================================================================
+  # L2: API 采集（优先级 ★★★★★）— 结构化数据，无需解析
+  # =====================================================================
+
+  # --- 科研论文 ---
+  - id: openalex-fisheries
+    name: "OpenAlex — Fisheries Research"
+    layer: api
+    url: "https://api.openalex.org/works"
+    category: research
+    language: en
+    enabled: false
+    weight: 5
+    description: "开放学术图谱 — 渔业/海洋/水产养殖新论文"
+    api_config:
+      endpoint: "https://api.openalex.org/works"
+      method: GET
+      params:
+        filter: "concepts.id:C2781112284|C11199685|C29086444"  # Fisheries, Marine Ecology, Aquaculture
+        sort: "publication_date:desc"
+        per_page: 50
+      response_path: "results"
+      field_map:
+        title: "title"
+        url: "doi"
+        summary: "abstract_inverted_index"
+        author: "authorships.author.display_name"
+        published_at: "publication_date"
+      # OpenAlex 数据说明:
+      #   C2781112284 = Fisheries
+      #   C11199685  = Marine Ecology
+      #   C29086444  = Aquaculture
+      #   C115961366 = Ocean
+      #   使用 | 连接多个 concept ID
+    status: untested
+
+  - id: crossref-fisheries
+    name: "Crossref — Fishery Papers"
+    layer: api
+    url: "https://api.crossref.org/works"
+    category: research
+    language: en
+    enabled: false
+    weight: 5
+    description: "Crossref 学术论文检索 — fisheries/marine/aquaculture"
+    api_config:
+      endpoint: "https://api.crossref.org/works"
+      method: GET
+      params:
+        query: "fisheries OR marine OR aquaculture"
+        filter: "type:journal-article,from-pub-date:2024-01-01"
+        sort: "published"
+        rows: 50
+      response_path: "message.items"
+      field_map:
+        title: "title"
+        url: "URL"
+        summary: "abstract"
+        author: "author.given"
+        published_at: "created.date-time"
+    status: untested
+
+  # --- 渔业数据 API ---
+  - id: global-fishing-watch-api
+    name: "GFW API"
+    layer: api
+    url: "https://gateway.api.globalfishingwatch.org/v3"
+    category: environment
+    language: en
+    enabled: false
+    weight: 4
+    description: "Global Fishing Watch 开放数据 API（AIS/活动/船只）"
+    status: untested
+    note: "需要注册获取 API token"
+
+  # --- 中文信源 ---
+  - id: fishfirst-cn
+    name: "中国水产频道"
+    layer: rss
+    url: "https://www.fishfirst.cn/feed"
+    category: industry
+    language: zh
+    enabled: false
+    weight: 4
+    description: "中国水产行业门户"
+    status: untested
+
+  # =====================================================================
+  # L3: 网页爬虫（优先级 ★★★★）— Jina Reader / Firecrawl
+  # =====================================================================
+  # 对于没有 RSS/API 的网站，使用现代网页解析工具
+  # Jina Reader: https://r.jina.ai/http://{url} → 直接返回 Markdown
+  # Firecrawl: https://firecrawl.dev → 结构化正文提取
+
+  - id: fishery-intel
+    name: "FisheryIntel"
+    layer: crawl
+    url: "https://fisheryintel.com/news"
+    category: industry
+    language: en
+    enabled: false
+    weight: 3
+    description: "渔业情报分析"
+    crawl_method: jina  # jina | firecrawl | bs4
+    status: untested
+
+  - id: china-fisheries-gov
+    name: "中国渔业政务网"
+    layer: crawl
+    url: "http://www.fishery.moa.gov.cn/"
+    category: policy
+    language: zh
+    enabled: false
+    weight: 4
+    description: "中国农业农村部渔业渔政管理局"
+    crawl_method: jina
+    status: untested
+
+  - id: fao-fisheries-crawl
+    name: "FAO Fisheries (Crawl)"
+    layer: crawl
+    url: "https://www.fao.org/fishery/en/news"
+    category: policy
+    language: en
+    enabled: false
+    weight: 5
+    description: "FAO 渔业新闻页（爬虫替代 RSS）"
+    crawl_method: jina
+    status: untested
+
+  # =====================================================================
+  # L4: LLM 搜索发现（优先级 ★★★★）— Agent 自主搜索
+  # =====================================================================
+  # 适用于没有固定结构的信源（政府公告、突发新闻等）
+  # 每期周刊生成后，Agent 对本周热点话题执行定向搜索
+
+  - id: llm-search-noaa
+    name: "LLM Search — NOAA"
+    layer: search
+    url: "site:noaa.gov fisheries"
+    category: policy
+    language: en
+    enabled: false
+    weight: 3
+    description: "定向搜索 NOAA 渔业相关最新内容"
+    search_config:
+      query_template: "site:noaa.gov fisheries {topic} after:{last_week}"
+      topics: ["regulation", "stock assessment", "quota", "bycatch", "habitat"]
+    status: untested
+
+  - id: llm-search-fao
+    name: "LLM Search — FAO"
+    layer: search
+    url: "site:fao.org fisheries"
+    category: policy
+    language: en
+    enabled: false
+    weight: 3
+    description: "定向搜索 FAO 渔业政策/报告"
+    search_config:
+      query_template: "site:fao.org fisheries {topic} after:{last_week}"
+      topics: ["report", "aquaculture", "policy", "statistics", "code of conduct"]
+    status: untested
+
+  - id: llm-search-eu
+    name: "LLM Search — EU Fisheries"
+    layer: search
+    url: "site:europa.eu fisheries"
+    category: policy
+    language: en
+    enabled: false
+    weight: 3
+    description: "搜索欧盟渔业政策更新"
+    search_config:
+      query_template: "site:europa.eu fisheries {topic} after:{last_week}"
+      topics: ["CFP", "quota", "TAC", "fisheries control", "EMFAF"]
+    status: untested
+
+  - id: llm-search-rfmo
+    name: "LLM Search — RFMO"
+    layer: search
+    url: "RFMO fisheries management"
+    category: policy
+    language: en
+    enabled: false
+    weight: 3
+    description: "搜索各区域渔业管理组织最新动态"
+    search_config:
+      query_template: "{rfmo} fisheries {topic} after:{last_week}"
+      topics: ["meeting", "quota", "compliance", "IUU", "stock status"]
+      rfmos: ["CCAMLR", "IOTC", "WCPFC", "ICCAT", "IATTC", "NAFO", "NEAFC"]
+    status: untested

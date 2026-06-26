@@ -1,0 +1,115 @@
+name: Weekly Fishery Newsletter
+
+on:
+  schedule:
+    # 每周一北京时间 08:00 (UTC 00:00)
+    - cron: '0 0 * * 1'
+  workflow_dispatch:       # 手动触发
+    inputs:
+      mode:
+        description: '运行模式'
+        required: false
+        type: choice
+        default: 'weekly'
+        options: [weekly, collect, process, output]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # 防止多个实例同时运行
+    concurrency:
+      group: newsletter-generation
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # 需要完整历史来保留往期数据
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Restore DB cache (for incremental dedup)
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/fishery_news.db
+            data/chroma/
+          key: fishery-db-${{ github.run_number }}
+          restore-keys: |
+            fishery-db-
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install httpx feedparser beautifulsoup4 lxml openai chromadb \
+                      pydantic pyyaml jinja2 python-dateutil rich langdetect \
+                      tenacity scikit-learn
+
+      - name: Generate Newsletter
+        run: |
+          MODE="${{ inputs.mode || 'weekly' }}"
+          echo "Running in mode: $MODE"
+          python src/main.py --mode $MODE
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './site'
+
+  # Deploy to GitHub Pages
+  deploy:
+    needs: generate
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Optional: commit generated data back to repo for history
+  commit-data:
+    needs: generate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./site-artifact
+      - name: Sync site back to repo
+        run: |
+          # Copy generated site back
+          mkdir -p site
+          cp -r ./site-artifact/* site/ 2>/dev/null || true
+          # Also restore data directory if exists in artifact
+          git config user.name "Fishery News Bot"
+          git config user.email "bot@fishery-news.dev"
+          git add site/ || true
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "📰 Auto: update newsletter $(date +%Y-W%V)"
+            git push
+          fi
