@@ -52,7 +52,7 @@ jobs:
                       tenacity scikit-learn
 
       - name: Generate Newsletter
-        run: python src/main.py --mode ${{ inputs.mode || 'weekly' }}
+        run: python src/main.py --mode weekly
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
 

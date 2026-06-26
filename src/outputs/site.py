@@ -123,6 +123,11 @@ class SiteGenerator:
         """
         self.site_dir.mkdir(parents=True, exist_ok=True)
 
+        # 无数据时生成提示页面
+        if not articles:
+            self._generate_empty_page(issue)
+            return self.site_dir / "index.html"
+
         template = self.env.get_template(self.template_name)
 
         # 分类分布（兼容 RawArticle 和 DB Article）
@@ -222,6 +227,47 @@ class SiteGenerator:
 
         logger.info(f"[Site] Generated: {issue_file}")
         return issue_file
+
+    def _generate_empty_page(self, issue) -> None:
+        """当本周没有新数据时生成提示页面。"""
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{issue.title} — Fishery News Weekly</title>
+<style>
+:root{{--bg:#f0f4f8;--primary:#0ea5e9;--primary-dark:#0369a1;--text:#1a202c;--text2:#64748b;--surface:#fff;--radius:16px;--shadow:0 4px 24px rgba(0,0,0,.06)}}
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}}
+.card{{background:var(--surface);border-radius:var(--radius);padding:48px 40px;text-align:center;max-width:500px;box-shadow:var(--shadow)}}
+.card .icon{{font-size:4rem;margin-bottom:16px}}
+.card h1{{font-size:1.5rem;color:var(--primary-dark);margin-bottom:8px}}
+.card p{{color:var(--text2);line-height:1.7;margin-bottom:4px}}
+.card .time{{font-size:.8rem;color:#94a3b8;margin-top:16px}}
+.card a{{color:var(--primary);text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="icon">🐟</div>
+<h1>{issue.title}</h1>
+<p>本周暂无新数据。</p>
+<p>系统已按计划执行采集任务，但未发现新的渔业新闻。</p>
+<p>下期周刊将在下周一自动生成。</p>
+<div class="time">上次检查: {now_str} (UTC)</div>
+<p style="margin-top:12px"><a href="archive.html">查看往期周刊 →</a></p>
+</div>
+</body>
+</html>"""
+        index_file = self.site_dir / "index.html"
+        index_file.write_text(html, encoding="utf-8")
+        # 同时生成 issue 子目录
+        issue_dir = self.site_dir / f"issue-{issue.number}"
+        issue_dir.mkdir(parents=True, exist_ok=True)
+        (issue_dir / "index.html").write_text(html, encoding="utf-8")
+        self._generate_archive_index()
 
     def _generate_archive_index(self) -> None:
         """生成 issue 归档列表页（带完整导航和现代设计）。"""

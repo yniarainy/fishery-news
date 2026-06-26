@@ -380,8 +380,16 @@ def run_pipeline(mode: str = "weekly") -> None:
         db.create_issue(issue)
         logger.info(f"Newsletter saved to {md_path}")
 
+        # 提取 editorial 文本（从 markdown 中安全提取）
+        editorial_text = ""
+        if markdown_content and '📝 主编按语' in markdown_content:
+            try:
+                editorial_text = markdown_content.split('📝 主编按语')[1].split('---')[0].strip()
+            except Exception:
+                pass
+
         # 发布（传入文章和洞察数据）
-        step_output(markdown_content, issue, config, articles=processed_articles, insights=insights, editorial=markdown_content.split('📝 主编按语')[1].split('---')[0] if '📝 主编按语' in markdown_content else "")
+        step_output(markdown_content, issue, config, articles=processed_articles, insights=insights, editorial=editorial_text)
 
         # 信源发现（可选）
         if mode == "weekly":
