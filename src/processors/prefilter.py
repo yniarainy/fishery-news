@@ -53,14 +53,14 @@ class Prefilter:
             "empty_title": 0,
         }
 
-        # 获取已发刊的文章 URL（避免跨期重复）
-        # 注意：只排除已发布到某一期周刊的文章，未发刊的允许重新处理
-        published_urls: set[str] = set()
+        # 获取最近 N 天已抓取的文章 URL（防止同一周内重复处理）
+        # 注意：不做跨期去重，每期独立。同一篇文章可能在不同期出现是正常的。
+        recent_urls: set[str] = set()
         if db:
             try:
-                published_urls = db.get_published_urls(days=90)
+                recent_urls = db.get_recent_urls(days=7)
             except Exception as e:
-                logger.warning(f"Failed to get published URLs from DB: {e}")
+                logger.warning(f"Failed to get recent URLs from DB: {e}")
 
         for article in articles:
             # Rule 1: 标题有效性
@@ -75,9 +75,9 @@ class Prefilter:
                 stats["blacklist_filtered"] += 1
                 continue
 
-            # Rule 3: URL 去重（仅针对已发刊文章）
-            if article.url and article.url in published_urls:
-                logger.debug(f"[Prefilter] URL already published: {article.url}")
+            # Rule 3: URL 去重（仅针对最近 7 天内已抓取的文章，防止同一次运行重复处理）
+            if article.url and article.url in recent_urls:
+                logger.debug(f"[Prefilter] URL duplicate (recent): {article.url}")
                 stats["url_duplicate"] += 1
                 continue
 
