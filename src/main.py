@@ -301,8 +301,11 @@ def run_pipeline(mode: str = "weekly") -> None:
 
     # --- Process ---
     if mode in ("process", "weekly") and raw_articles:
+        # 预过滤（在存入 DB 之前，避免刚插入就被自己的 URL 去重拦截）
+        filtered = step_prefilter(raw_articles, config, db)
+
         # 保存到 DB
-        for article in raw_articles:
+        for article in filtered:
             from src.storage.models import Article as DBArticle
             db_article = DBArticle(
                 id=article.compute_id(),
@@ -318,9 +321,6 @@ def run_pipeline(mode: str = "weekly") -> None:
                 image_url=article.image_url,
             )
             db.insert_article(db_article)
-
-        # 预过滤
-        filtered = step_prefilter(raw_articles, config, db)
         # 去重
         unique = step_dedup(filtered, config, db, vector_store)
         # 分类
