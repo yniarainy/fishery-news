@@ -1,6 +1,9 @@
 """Regenerate newsletter from existing DB data (no re-fetch)."""
 import os, sys
-os.environ['DEEPSEEK_API_KEY'] = 'REDACTED_API_KEY'
+# DEEPSEEK_API_KEY 从环境变量读取，勿在此硬编码!
+from src.config import get_config
+_key_cfg = get_config()
+os.environ.setdefault('DEEPSEEK_API_KEY', _key_cfg.get('llm', {}).get('api_key', ''))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from pathlib import Path
